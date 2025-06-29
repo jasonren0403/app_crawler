@@ -25,9 +25,15 @@ class ItemCleaner:
     def datestrTotimestamp(cls, value) -> int:
         # timestamp:10 s
 
-        import re, time, datetime, calendar
-        if not value: return int(time.mktime((1970, 1, 1, 8, 0, 0, 3, 1, 0)))
-        if re.match(r"\d{10,14}", value): return int(value)
+        import re
+        import time
+        import datetime
+        import calendar
+
+        if not value:
+            return int(time.mktime((1970, 1, 1, 8, 0, 0, 3, 1, 0)))
+        if re.match(r"\d{10,14}", value):
+            return int(value)
         try:
             timeArray = time.strptime(value, "%Y-%m-%d %H:%M:%S")
             return int(time.mktime(timeArray))
@@ -37,11 +43,15 @@ class ItemCleaner:
             # x 个月前/ x 天前 / x 小时前 / x 分钟前
             now = datetime.datetime.now()
             match_month = re.findall(r"(\d+)个月前", value)
-            match_day = re.findall(r"(\d+)天前", value) or re.findall(r"(\d+)日前", value)
+            match_day = re.findall(r"(\d+)天前", value) or re.findall(
+                r"(\d+)日前", value
+            )
             match_hour = re.findall(r"(\d+)小时前", value)
             match_minute = re.findall(r"(\d+)分钟前", value)
             match_second = re.findall(r"(\d+)秒前", value)
-            if not (match_month or match_day or match_hour or match_minute or match_second):
+            if not (
+                match_month or match_day or match_hour or match_minute or match_second
+            ):
                 raise DropItem(f"Invalid time format, ignored. current value {value}")
             elif match_month:
                 monthdelta = int(match_month[0])
@@ -68,10 +78,11 @@ class ItemCleaner:
     @classmethod
     def cleanhtmlentites(cls, value: str) -> str:
         import re
+
         content = remove_tags(value)
         content = remove_comments(content)
         # 移除空格 换行
-        return re.sub(r'[\t\r\n\s]', '', content)
+        return re.sub(r"[\t\r\n\s]", "", content)
 
     @classmethod
     def cleanScore(cls, value) -> float:
@@ -80,6 +91,7 @@ class ItemCleaner:
         except ValueError:
             pass
         import re
+
         # appchina
         match = re.findall(r"(\d+)%好评\(\d+人\)", value, re.M)
         if match:
@@ -98,6 +110,7 @@ class ItemCleaner:
         except ValueError:
             pass
         import re
+
         # appchina
         match = re.findall(r"\d+%好评\((\d+)人\)", value, re.M)
         if match:
@@ -109,13 +122,14 @@ class ItemCleaner:
         if isinstance(value, int):
             return value
         import re
+
         match = re.findall(r"(\d+[万|亿]?)次", value)
         if match:
-            if '万' in match[0]:
-                s = match[0].replace('万', '')
+            if "万" in match[0]:
+                s = match[0].replace("万", "")
                 return int(s) * 10000
-            elif '亿' in match[0]:
-                s = match[0].replace('亿', '')
+            elif "亿" in match[0]:
+                s = match[0].replace("亿", "")
                 return int(s) * 1_0000_0000
             else:
                 return int(match[0])
@@ -132,24 +146,49 @@ class ItemCleaner:
 class AppInfo(scrapy.Item):
     name = scrapy.Field()
     store = scrapy.Field()
-    score = scrapy.Field(serializer=float, input_processor=itemloaders.processors.Compose(itemloaders.processors.TakeFirst(),
-                                                                                          ItemCleaner.cleanScore))
-    description = scrapy.Field(serializer=str, input_processor=itemloaders.processors.MapCompose(ItemCleaner.cleanhtmlentites))
-    update_time = scrapy.Field(serializer=int, input_processor=itemloaders.processors.Compose(itemloaders.processors.TakeFirst(),
-                                                                                              ItemCleaner.datestrTotimestamp))
+    score = scrapy.Field(
+        serializer=float,
+        input_processor=itemloaders.processors.Compose(
+            itemloaders.processors.TakeFirst(), ItemCleaner.cleanScore
+        ),
+    )
+    description = scrapy.Field(
+        serializer=str,
+        input_processor=itemloaders.processors.MapCompose(ItemCleaner.cleanhtmlentites),
+    )
+    update_time = scrapy.Field(
+        serializer=int,
+        input_processor=itemloaders.processors.Compose(
+            itemloaders.processors.TakeFirst(), ItemCleaner.datestrTotimestamp
+        ),
+    )
     category = scrapy.Field()
     developer = scrapy.Field(serializer=str)
-    download_times = scrapy.Field(serializer=int, input_processor=itemloaders.processors.MapCompose(ItemCleaner.dlTimestrtoInt))
-    review_times = scrapy.Field(serializer=int, input_processor=itemloaders.processors.Compose(itemloaders.processors.TakeFirst(),
-                                                                                               ItemCleaner.cleanReviewTime))
+    download_times = scrapy.Field(
+        serializer=int,
+        input_processor=itemloaders.processors.MapCompose(ItemCleaner.dlTimestrtoInt),
+    )
+    review_times = scrapy.Field(
+        serializer=int,
+        input_processor=itemloaders.processors.Compose(
+            itemloaders.processors.TakeFirst(), ItemCleaner.cleanReviewTime
+        ),
+    )
     app_id = scrapy.Field()
     md5 = scrapy.Field()
 
 
 class AppComment(scrapy.Item):
-    content = scrapy.Field(serializer=str, input_processor=itemloaders.processors.MapCompose(ItemCleaner.cleanhtmlentites))
-    time = scrapy.Field(serializer=int, input_processor=itemloaders.processors.Compose(itemloaders.processors.TakeFirst(),
-                                                                                       ItemCleaner.datestrTotimestamp))
+    content = scrapy.Field(
+        serializer=str,
+        input_processor=itemloaders.processors.MapCompose(ItemCleaner.cleanhtmlentites),
+    )
+    time = scrapy.Field(
+        serializer=int,
+        input_processor=itemloaders.processors.Compose(
+            itemloaders.processors.TakeFirst(), ItemCleaner.datestrTotimestamp
+        ),
+    )
     user = scrapy.Field()
     score = scrapy.Field(serializer=int)
     app_id = scrapy.Field()

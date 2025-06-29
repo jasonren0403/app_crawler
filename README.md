@@ -1,14 +1,21 @@
 # 应用程序爬虫-scrapy
 ## 如何开始爬取
-入口文件是 `run.py`，根据提示交互即可
+进入 src 文件夹，运行 `uv run scrapy crawl <爬虫名>`，名称见[支持表格](#支持以下应用软件商店)
 
 支持多种日志输出方式：文件(`LOG_FILE`)或标准输出(`LOG_STDOUT`)，但暂不支持同时做这两个输出
+
 ## 支持以下应用软件商店
-* [360手机助手](http://zhushou.360.cn/) - `spiders/a360.py`
-* [应用汇](http://www.appchina.com/) - `spiders/appchina.py`
-* [联想应用商店](https://www.lenovomm.com/) - `spiders/leshangdian.py`
+
+| 商店名称 |                 首页                  | 文件 | 爬虫名称 |
+| :--: |:-----------------------------------:| :--: | :--: |
+| 360手机助手 |  [360手机助手](http://zhushou.360.cn/)  | `spiders/a360.py` | a360 |
+| 应用汇|   [应用汇](http://www.appchina.com/)   |  `spiders/appchina.py` | appchina |
+| 联想应用商店 | [联想应用商店](https://www.lenovomm.com/) | `spiders/leshangdian.py` | leshangdian | 
+
 ## 爬取内容
-> 数据库定义在 database_def 文件夹下
+
+数据库定义在 database_def 文件夹下
+
 ### App信息
 ```python
 class AppInfo(scrapy.Item):
