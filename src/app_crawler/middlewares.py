@@ -33,17 +33,17 @@ class AppcrawlerDevDownloaderMiddleware(object):
             sql = "select app_id from app_meta where app_id = %s and store=%s"
             db_cur.execute(sql, (pkg_name, spider.name))
             if db_cur.fetchone():
-                spider.logger.critical(
+                spider.logger.info(
                     f"App[{pkg_name}] has already crawled. Will update data"
                 )
                 # raise IgnoreRequest(f"App[{pkg_name}] already crawled")
-        if re.match(r"http://zhushou\.360\.cn/detail/index/soft_id/\d+", request.url):
+        if re.match(r"https://zhushou\.360\.cn/detail/index/soft_id/\d+", request.url):
             import requests
 
             req = requests.get(
                 url=request.url,
                 headers={
-                    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36 (+appcrawler)"
+                    "User-Agent": spider.settings.get("USER_AGENT")
                 },
             )
             html = req.text
@@ -54,7 +54,7 @@ class AppcrawlerDevDownloaderMiddleware(object):
                 db_cur.execute(sql, (pkg_name, spider.name))
                 if db_cur.fetchone():
                     spider.logger.debug(f"{db_cur.fetchone()}")
-                    spider.logger.critical(
+                    spider.logger.info(
                         f"App[{pkg_name}] has already crawled. Will update data"
                     )
                     # raise IgnoreRequest(f"App[{pkg_name}] already crawled")

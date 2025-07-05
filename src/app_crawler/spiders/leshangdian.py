@@ -5,7 +5,6 @@ from scrapy.linkextractors import LinkExtractor
 from scrapy.spiders import CrawlSpider
 
 from ..items import AppInfo, AppInfoLoader, AppComment, AppCommentLoader
-import time
 
 
 class LeshangdianSpider(CrawlSpider):
@@ -176,7 +175,7 @@ class LeshangdianSpider(CrawlSpider):
 
     def parse_app_meta(self, response):
         import json
-
+        self.logger.info(f"parsing meta {response.url}")
         try:
             s = response.css("body>script:not([async])::text").extract_first()
             c = json.loads(
@@ -247,7 +246,7 @@ class LeshangdianSpider(CrawlSpider):
 
     def parse_comments(self, response):
         # https://www.lenovomm.com/api/comment?bizCode=APP&bizIdentity={APPID}&si={START_INDEX}&c=40
-        # &clientid={} if clientid is not set error 308 will be raised by server
+        # &clientid={} if clientid is not set, server will raise error 308
         self.logger.info(
             f"Parsing app [{response.meta.get('app_id')}] comment. Offset:{response.meta.get('offset', 1)}"
         )

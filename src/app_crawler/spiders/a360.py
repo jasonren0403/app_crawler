@@ -10,7 +10,7 @@ from scrapy.spiders import CrawlSpider
 
 from ..items import AppInfo, AppComment, AppInfoLoader, AppCommentLoader
 
-
+# todo: adapt to new format
 class A360Spider(CrawlSpider):
     name = "360"
     allowed_domains = ["zhushou.360.cn"]
@@ -44,15 +44,15 @@ class A360Spider(CrawlSpider):
     """
     CRAWL_COMMENT = False
 
-    def start_requests(self):
+    async def start(self):
         yield scrapy.Request(
-            url="http://zhushou.360.cn/list/index/cid/2",
+            url="https://zhushou.360.cn/category_game",
             meta={"source": "game"},
             callback=self.max_page,
             dont_filter=True,
         )
         yield scrapy.Request(
-            url="https://zhushou.360.cn/list/index/cid/1",
+            url="https://zhushou.360.cn/category_soft",
             meta={"source": "software"},
             callback=self.max_page,
             dont_filter=True,
@@ -83,10 +83,10 @@ class A360Spider(CrawlSpider):
                 match response.meta["source"]:
                     case "game":
                         # 游戏综合榜
-                        url = f"http://zhushou.360.cn/list/index/cid/2/order/weekpure/?page={i}"
+                        url = f"https://zhushou.360.cn/list/index/cid/2/order/weekpure/?page={i}"
                     case "software":
                         # 软件综合榜
-                        url = f"http://zhushou.360.cn/list/index/cid/1/order/weekdownload/?page={i}"
+                        url = f"https://zhushou.360.cn/list/index/cid/1/order/weekdownload/?page={i}"
                     case _:
                         raise ValueError(f"Bad value {response.meta['source']}")
                 yield scrapy.Request(
@@ -209,8 +209,8 @@ class A360Spider(CrawlSpider):
                 c = requests.get(
                     url=f"https://comment.mobilem.360.cn/comment/getLevelCount?{query}",
                     headers={
-                        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36(+appcrawler)",
-                        "Referer": "http://zhushou.360.cn/",
+                        "User-Agent": self.settings.get("USER_AGENT"),
+                        "Referer": "https://zhushou.360.cn/",
                     },
                 )
                 resp = c.json()

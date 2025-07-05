@@ -8,6 +8,7 @@ dependencies = [
     "itemloaders>=1.3.0,<1.4.0",
     "js2py>=0.74",
     "pymysql>=1.0.3",
+    "python-dateutil>=2.9.0.post0",
     "scrapy>=2.13.0,<2.14.0",
     "w3lib>=2.3.0,<2.4.0",
 ]
