@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import time
 
 import scrapy
 from scrapy.exceptions import DropItem

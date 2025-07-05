@@ -7,6 +7,8 @@
 #     https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 import time
+import logging
+from pathlib import Path
 
 from scrapy.extensions.telnet import TelnetConsole
 
@@ -18,9 +20,6 @@ SPIDER_MODULES = ["app_crawler.spiders"]
 NEWSPIDER_MODULE = "app_crawler.spiders"
 
 ADDONS = {}
-
-import logging
-from pathlib import Path
 
 current_file_path = Path(__file__).resolve()
 LOG_DIR = current_file_path.parent.parent.parent / "log"
