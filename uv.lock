@@ -27,7 +27,7 @@ requires-dist = [
     { name = "pymysql", specifier = ">=1.0.3" },
     { name = "python-dateutil", specifier = ">=2.9.0.post0" },
     { name = "scrapy", specifier = ">=2.13.0,<2.14.0" },
-    { name = "w3lib", specifier = ">=2.3.0,<2.4.0" },
+    { name = "w3lib", specifier = ">=2.3.0,<2.5.0" },
 ]
 
 [package.metadata.requires-dev]
@@ -635,11 +635,11 @@ wheels = [
 
 [[package]]
 name = "w3lib"
-version = "2.3.1"
+version = "2.4.0"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/bf/7d/1172cfaa1e29beb9bf938e484c122b3bdc82e8e37b17a4f753ba6d6e009f/w3lib-2.3.1.tar.gz", hash = "sha256:5c8ac02a3027576174c2b61eb9a2170ba1b197cae767080771b6f1febda249a4", size = 49531, upload-time = "2025-01-27T14:22:10.453Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/f1/91/186665abf1a6d16c0c5ea1f0e681d9c852b45c3a750aa8657f8f956690a8/w3lib-2.4.0.tar.gz", hash = "sha256:e233ad21649b69d0e047a10f30181ae9677524a29f6f71f6f3c758dc0c8d2648", size = 48302, upload-time = "2026-01-29T07:05:07.504Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/58/dd/56f0d8af71e475ed194d702f8b4cf9cea812c95e82ad823d239023c6558c/w3lib-2.3.1-py3-none-any.whl", hash = "sha256:9ccd2ae10c8c41c7279cd8ad4fe65f834be894fe7bfdd7304b991fd69325847b", size = 21751, upload-time = "2025-01-27T14:22:09.421Z" },
+    { url = "https://files.pythonhosted.org/packages/2e/f5/ce3ab627e0cb51591c9e3dc4b9b173f15d7f2bec1c0010420b15fc442940/w3lib-2.4.0-py3-none-any.whl", hash = "sha256:260b5a22aeb86ae73213857f69ed20829a45150f8d5b12050b1f02ada414db79", size = 21603, upload-time = "2026-01-29T07:05:05.841Z" },
 ]
 
 [[package]]
